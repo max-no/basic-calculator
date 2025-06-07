@@ -101,4 +101,9 @@ body {
   height: 50px;
   background: none;
   box-sizing: border-box;
+  font-size: 2em;
+}
+
+#numberButton1 {
+  border: none;
 }
