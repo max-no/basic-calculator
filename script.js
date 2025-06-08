@@ -6,6 +6,7 @@ for (let i = 0; i <= 14; i++) {
   const numberButton = document.createElement('button');
   numberButton.id = `numberButton${i}`;
   numberButton.classList.add('number-button');
+  numberButton.setAttribute('style', 'background: none;');
   entryNumbers.appendChild(numberButton);
 }
 let numberButtons = document.querySelectorAll('.number-button');
@@ -16,6 +17,7 @@ for (let i = 0; i <= 4; i++) {
   const functionButton = document.createElement('button');
   functionButton.id = `functionButton${i}`;
   functionButton.classList.add('function-button');
+  functionButton.setAttribute('style', 'background: none;');
   modifierButtons.appendChild(functionButton);
 }
 let a, b;
@@ -24,107 +26,85 @@ let operator;
 let previousAnswer;
 let displayMustBeCleared = false;
 
+function prepareNewEntry() {
+  if (displayMustBeCleared) {
+    display.textContent = '';
+    displayMustBeCleared = false;
+  }
+}
+
+let hoverBackground = 'rgba(211, 211, 211, 0.54)';
+
 numberButtons.forEach((number) => {
+  number.addEventListener('mouseover', () => {
+    if (number.id === 'numberButton1') return;
+    if (number.id === 'numberButton0')
+      number.style.background = 'rgba(247, 21, 21, 0.56)';
+    else number.style.background = hoverBackground;
+  });
+  number.addEventListener('mouseout', () => {
+    if (number.id === 'numberButton1') return;
+    number.setAttribute('style', 'background: none;');
+  });
+
+  number.addEventListener('mousedown', () => {
+    if (number.id === 'numberButton1') return;
+    if (number.id === 'numberButton0')
+      number.style.background = 'rgba(247, 21, 21, 0.93)';
+    else number.style.background = 'rgb(200, 200, 200)';
+  });
+
+  number.addEventListener('mouseup', () => {
+    if (number.id === 'numberButton1') return;
+    if (number.id === 'numberButton0')
+      number.style.background = 'rgba(247, 21, 21, 0.56)';
+    else number.style.background = hoverBackground;
+  });
+
   number.addEventListener('click', () => {
+    prepareNewEntry();
     switch (number.id) {
+      case 'numberButton1':
+        return;
+        break;
       case 'numberButton13':
-        if (displayMustBeCleared) {
-          display.textContent = '';
-          displayMustBeCleared = false;
-        }
-        if (sequentialOperation) {
-          display.textContent += '0';
-        } else display.textContent += '0';
+        display.textContent += '0';
         break;
 
       case 'numberButton9':
-        if (displayMustBeCleared) {
-          display.textContent = '';
-          displayMustBeCleared = false;
-        }
-        if (sequentialOperation) {
-          display.textContent += '1';
-        } else display.textContent += '1';
+        display.textContent += '1';
         break;
 
       case 'numberButton10':
-        if (displayMustBeCleared) {
-          display.textContent = '';
-          displayMustBeCleared = false;
-        }
-        if (sequentialOperation) {
-          display.textContent += '2';
-        } else display.textContent += '2';
+        display.textContent += '2';
         break;
 
       case 'numberButton11':
-        if (displayMustBeCleared) {
-          display.textContent = '';
-          displayMustBeCleared = false;
-        }
-        if (sequentialOperation) {
-          display.textContent += '3';
-        } else display.textContent += '3';
+        display.textContent += '3';
         break;
 
       case 'numberButton6':
-        if (displayMustBeCleared) {
-          display.textContent = '';
-          displayMustBeCleared = false;
-        }
-        if (sequentialOperation) {
-          display.textContent += '4';
-        } else display.textContent += '4';
+        display.textContent += '4';
         break;
 
       case 'numberButton7':
-        if (displayMustBeCleared) {
-          display.textContent = '';
-          displayMustBeCleared = false;
-        }
-        if (sequentialOperation) {
-          display.textContent += '5';
-        } else display.textContent += '5';
+        display.textContent += '5';
         break;
 
       case 'numberButton8':
-        if (displayMustBeCleared) {
-          display.textContent = '';
-          displayMustBeCleared = false;
-        }
-        if (sequentialOperation) {
-          display.textContent += '6';
-        } else display.textContent += '6';
+        display.textContent += '6';
         break;
 
       case 'numberButton3':
-        if (displayMustBeCleared) {
-          display.textContent = '';
-          displayMustBeCleared = false;
-        }
-        if (sequentialOperation) {
-          display.textContent += '7';
-        } else display.textContent += '7';
+        display.textContent += '7';
         break;
 
       case 'numberButton4':
-        if (displayMustBeCleared) {
-          display.textContent = '';
-          displayMustBeCleared = false;
-        }
-        if (sequentialOperation) {
-          display.textContent += '8';
-        } else display.textContent += '8';
+        display.textContent += '8';
         break;
 
       case 'numberButton5':
-        if (displayMustBeCleared) {
-          display.textContent = '';
-          displayMustBeCleared = false;
-        }
-        if (sequentialOperation) {
-          display.textContent += '9';
-        } else display.textContent += '9';
+        display.textContent += '9';
         break;
 
       case 'numberButton2':
@@ -132,170 +112,186 @@ numberButtons.forEach((number) => {
         break;
 
       case 'numberButton14':
-        let decimalAdded = false;
-        if (display.textContent.includes('.')) {
-          decimalAdded = true;
-          break;
+        if (!display.textContent.includes('.')) {
+          display.textContent += '.';
         }
-        if (!decimalAdded) display.textContent += '.';
         break;
 
       case 'numberButton12':
-        if (displayMustBeCleared) {
-          display.textContent = '';
-          displayMustBeCleared = false;
-        }
-        if (sequentialOperation) {
-          display.textContent = Math.floor(Math.random() * 1000);
-        } else display.textContent = Math.floor(Math.random() * 1000);
-
+        display.textContent = Math.floor(Math.random() * 1000);
         break;
     }
-    storedDisplay = display.textContent;
-    if (display.textContent.length > 8)
+    if (display.textContent.length > 8) {
       display.textContent = display.textContent.slice(0, 9);
+    }
+    storedDisplay = display.textContent;
+
     console.log(`Current value of first number is ${storedDisplay}`);
     console.log(`Current value of second number is ${b}`);
   });
 });
 
 let sequentialOperation = false;
-
+let modifierHoverBackground = 'rgba(0, 128, 255, 0.3)';
 let modifiers = document.querySelectorAll('.function-button');
 modifiers.forEach((modifier) => {
+  modifier.addEventListener('mouseover', () => {
+    if (modifier.id === 'functionButton4')
+      modifier.style.background = 'rgba(6, 210, 67, 0.44)';
+    else modifier.style.background = modifierHoverBackground;
+  });
+  modifier.addEventListener('mouseout', () => {
+    modifier.setAttribute('style', 'background: none;');
+  });
+
+  modifier.addEventListener('mousedown', () => {
+    if (modifier.id === 'functionButton4')
+      modifier.style.background = 'rgba(6, 210, 67, 0.94)';
+    else modifier.style.background = 'rgb(0, 128, 255)';
+  });
+
+  modifier.addEventListener('mouseup', () => {
+    if (modifier.id === 'functionButton4')
+      modifier.style.background = 'rgba(6, 210, 67, 0.44)';
+    else modifier.style.background = modifierHoverBackground;
+  });
   modifier.addEventListener('click', () => {
-    //if (sequentialOperation)
+    switch (modifier.id) {
+      case 'functionButton0':
+        if (
+          operator === 'add' ||
+          operator === 'subtract' ||
+          operator === 'multiply' ||
+          operator === 'divide'
+        ) {
+          sequentialOperation = true;
+        }
+        if (sequentialOperation) {
+          displayMustBeCleared = true;
+          console.log(`displayMustBeCleared ${displayMustBeCleared}`);
+          b = display.textContent;
+          let result = operate(operator);
+          display.textContent = result;
+          a = result;
+          operator = 'add';
+          return;
+        }
+        if (+previousAnswer === +display.textContent) {
+          a = +display.textContent;
+        }
+        if (+previousAnswer !== +display.textContent) a = +storedDisplay;
 
-    if (modifier.id === 'functionButton0') {
-      if (
-        operator === 'add' ||
-        operator === 'subtract' ||
-        operator === 'multiply' ||
-        operator === 'divide'
-      ) {
-        sequentialOperation = true;
-      }
-      if (sequentialOperation) {
-        displayMustBeCleared = true;
-        console.log(`displayMustBeCleared ${displayMustBeCleared}`);
+        sequentialOperation = false;
+        operator = 'add';
+        console.log(`Operator is ${operator}`);
+
+        console.log(`First number to be operated on is ${a}`);
+        display.textContent = '';
+        break;
+      case 'functionButton1':
+        if (
+          operator === 'add' ||
+          operator === 'subtract' ||
+          operator === 'multiply' ||
+          operator === 'divide'
+        ) {
+          sequentialOperation = true;
+        }
+        if (sequentialOperation) {
+          displayMustBeCleared = true;
+          console.log(`displayMustBeCleared ${displayMustBeCleared}`);
+          b = display.textContent;
+          let result = operate(operator);
+          display.textContent = result;
+          a = result;
+          operator = 'subtract';
+          return;
+        }
+        if (+previousAnswer === +display.textContent) {
+          a = +display.textContent;
+        }
+        if (+previousAnswer !== +display.textContent) a = +storedDisplay;
+
+        sequentialOperation = false;
+        operator = 'subtract';
+        display.textContent = '';
+        break;
+      case 'functionButton2':
+        if (
+          operator === 'add' ||
+          operator === 'subtract' ||
+          operator === 'multiply' ||
+          operator === 'divide'
+        ) {
+          sequentialOperation = true;
+        }
+        if (sequentialOperation) {
+          displayMustBeCleared = true;
+          b = display.textContent;
+          let result = operate(operator);
+          display.textContent = result;
+          a = result;
+          operator = 'multiply';
+          return;
+        }
+        if (+previousAnswer === +display.textContent) {
+          a = +display.textContent;
+        }
+        if (+previousAnswer !== +display.textContent) a = +storedDisplay;
+
+        sequentialOperation = false;
+        operator = 'multiply';
+        display.textContent = '';
+        break;
+      case 'functionButton3':
+        if (
+          operator === 'add' ||
+          operator === 'subtract' ||
+          operator === 'multiply' ||
+          operator === 'divide'
+        ) {
+          sequentialOperation = true;
+        }
+        if (sequentialOperation) {
+          displayMustBeCleared = true;
+          b = display.textContent;
+          let result = operate(operator);
+          display.textContent = result;
+          a = result;
+          operator = 'divide';
+          return;
+        }
+        if (+previousAnswer === +display.textContent) {
+          a = +display.textContent;
+        }
+        if (+previousAnswer !== +display.textContent) a = +storedDisplay;
+
+        sequentialOperation = false;
+        operator = 'divide';
+        display.textContent = '';
+        break;
+      case 'functionButton4':
+        if (!operator) return;
         b = display.textContent;
-        display.textContent = operate(operator);
-        console.log(`Sequential operator is ${sequentialOperation}`);
-        a = operate(operator);
-        return;
-      }
-      if (previousAnswer !== undefined) {
-        a = previousAnswer;
-      } else a = +storedDisplay;
-
-      sequentialOperation = false;
-      operator = 'add';
-      console.log(`Operator is ${operator}`);
-
-      console.log(`First number to be operated on is ${a}`);
-      display.textContent = '';
-      //if (a >= 0 && b >= 0) display.textContent = add(a, b);
-    }
-    if (modifier.id === 'functionButton1') {
-      if (
-        operator === 'add' ||
-        operator === 'subtract' ||
-        operator === 'multiply' ||
-        operator === 'divide'
-      ) {
-        sequentialOperation = true;
-      }
-      if (sequentialOperation) {
+        if (b === '') {
+          display.textContent = 'Error';
+          operator = undefined;
+          sequentialOperation = false;
+          displayMustBeCleared = true;
+          return;
+        }
+        let solution = operate(operator);
+        display.textContent = solution;
+        console.log(`solution length is ${display.textContent.length}`);
+        if (display.textContent.length > 8) {
+          display.textContent = display.textContent.slice(0, 8);
+        }
+        previousAnswer = solution === 'Error' ? undefined : +solution;
+        console.log(`Previous answer was ${previousAnswer}`);
+        operator = undefined;
+        sequentialOperation = false;
         displayMustBeCleared = true;
-        console.log(`displayMustBeCleared ${displayMustBeCleared}`);
-        b = display.textContent;
-        display.textContent = operate(operator);
-        console.log(`Sequential operator is ${sequentialOperation}`);
-        a = operate(operator);
-        return;
-      }
-      if (previousAnswer !== undefined) {
-        a = previousAnswer;
-      } else a = +storedDisplay;
-
-      sequentialOperation = false;
-      operator = 'subtract';
-      console.log(`Operator is ${operator}`);
-
-      console.log(`First number to be operated on is ${a}`);
-      display.textContent = '';
-    }
-    if (modifier.id === 'functionButton2') {
-      if (
-        operator === 'add' ||
-        operator === 'subtract' ||
-        operator === 'multiply' ||
-        operator === 'divide'
-      ) {
-        sequentialOperation = true;
-      }
-      if (sequentialOperation) {
-        displayMustBeCleared = true;
-        console.log(`displayMustBeCleared ${displayMustBeCleared}`);
-        b = display.textContent;
-        display.textContent = operate(operator);
-        console.log(`Sequential operator is ${sequentialOperation}`);
-        a = operate(operator);
-        return;
-      }
-      if (previousAnswer !== undefined) {
-        a = previousAnswer;
-      } else a = +storedDisplay;
-
-      sequentialOperation = false;
-      operator = 'multiply';
-      console.log(`Operator is ${operator}`);
-
-      console.log(`First number to be operated on is ${a}`);
-      display.textContent = '';
-    }
-    if (modifier.id === 'functionButton3') {
-      if (
-        operator === 'add' ||
-        operator === 'subtract' ||
-        operator === 'multiply' ||
-        operator === 'divide'
-      ) {
-        sequentialOperation = true;
-      }
-      if (sequentialOperation) {
-        displayMustBeCleared = true;
-        console.log(`displayMustBeCleared ${displayMustBeCleared}`);
-        b = display.textContent;
-        display.textContent = operate(operator);
-        console.log(`Sequential operator is ${sequentialOperation}`);
-        a = operate(operator);
-        return;
-      }
-      if (previousAnswer !== undefined) {
-        a = previousAnswer;
-      } else a = +storedDisplay;
-
-      sequentialOperation = false;
-      operator = 'divide';
-      console.log(`Operator is ${operator}`);
-
-      console.log(`First number to be operated on is ${a}`);
-      display.textContent = '';
-    }
-    if (modifier.id === 'functionButton4') {
-      b = +display.textContent;
-      let solution = operate(operator);
-      display.textContent = solution;
-      console.log(`solution length is ${solution.length}`);
-      if (display.textContent.length > 8) {
-        display.textContent = display.textContent.slice(0, 8);
-      }
-      previousAnswer = solution;
-      console.log(`Previous answer was ${previousAnswer}`);
-      operator = undefined;
-      sequentialOperation = false;
-      displayMustBeCleared = true;
+        break;
     }
   });
 });
@@ -323,9 +319,10 @@ function subtract(a, b) {
 }
 
 function divide(a, b) {
-  if (b === 0) {
-    return 'YUUUUUGE';
-  } else return +a / +b;
+  if (+b === 0) {
+    return 'Error';
+  }
+  return +a / +b;
 }
 
 function multiply(a, b) {
@@ -334,13 +331,7 @@ function multiply(a, b) {
 
 function allClear() {
   display.textContent = '';
-  plusSelected = false;
-  minusSelected = false;
-  multiplySelected = false;
-  divideSelected = false;
-  modifierSelected = false;
-  equalsPushed = false;
-  displayCleared = false;
+  displayMustBeCleared = false;
   a = undefined;
   b = undefined;
   previousAnswer = undefined;
@@ -353,15 +344,6 @@ function clearDisplay() {
   displayCleared = false;
   display.textContent = '';
 }
-
-//case statements
-let plusSelected = false;
-let minusSelected = false;
-let multiplySelected = false;
-let divideSelected = false;
-let modifierSelected = false;
-let equalsPushed = false;
-let displayCleared = false;
 
 //nodes
 let plusButton = document.querySelector('#functionButton0');

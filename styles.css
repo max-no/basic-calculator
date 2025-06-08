@@ -88,7 +88,6 @@ body {
   border: solid 3px black;
   width: 55px;
   height: 50px;
-  background: none;
   border-radius: 16px;
   box-sizing: border-box;
   font-size: 2em;
@@ -99,7 +98,6 @@ body {
   border: solid 3px rgb(6, 12, 125);
   width: 55px;
   height: 50px;
-  background: none;
   box-sizing: border-box;
   font-size: 2em;
 }
